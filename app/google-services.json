@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "8898276605",
+    "firebase_url": "https://controlonairapp.firebaseio.com",
+    "project_id": "controlonairapp",
+    "storage_bucket": "controlonairapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:8898276605:android:c3db182da1914c06",
+        "android_client_info": {
+          "package_name": "com.esgi.guitton.candice.controlonair"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "8898276605-r0c0rcfm3t90s0pbol95f63iij1qu3d6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.esgi.guitton.candice.controlonair",
+            "certificate_hash": "e7f1515dcc2cc27a8c5135ba1d899d556058b244"
+          }
+        },
+        {
+          "client_id": "8898276605-earc541mbvfnhgbaf43961hm48r11hue.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZcSN9V9urlfKtVDnSnudbi6x1aNQmE4M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "8898276605-earc541mbvfnhgbaf43961hm48r11hue.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
