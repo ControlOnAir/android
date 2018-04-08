@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.esgi.guitton.candice.controlonair.ContactActivity">
+
+
+    <TextView
+        android:id="@+id/contact_title"
+        style="@style/message_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/contact_title" />
+
+    <EditText
+        android:id="@+id/edit_text_search"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="@string/search"
+        app:layout_constraintTop_toBottomOf="@+id/contact_title"
+
+        />
+
+    <ListView
+        android:id="@+id/list_view_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_search">
+
+    </ListView>
+</android.support.constraint.ConstraintLayout>
