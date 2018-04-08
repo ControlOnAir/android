@@ -5,14 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.esgi.guitton.candice.controlonair.MainActivity">
-
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:id="@+id/home_page"
+        style="@style/message_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/home_page" />
+
+    <ImageView
+        android:id="@+id/message"
+        android:layout_width="153dp"
+        android:layout_height="100dp"
+        android:clickable="true"
+        android:src="@drawable/loutre"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/contact"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <ImageView
+        android:id="@+id/contact"
+        android:layout_width="172dp"
+        android:layout_height="100dp"
+        android:clickable="true"
+        android:src="@drawable/loutre"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/message"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
