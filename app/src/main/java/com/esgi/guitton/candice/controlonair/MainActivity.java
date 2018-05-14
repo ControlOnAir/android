@@ -7,8 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 
-
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
     ImageView messageButton;
     ImageView contactButton;
 
@@ -22,7 +21,7 @@ public class MainActivity extends AppCompatActivity{
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MessageActivity.class);
+                Intent intent = new Intent(MainActivity.this, ConversationActivity.class);
                 startActivity(intent);
             }
         });

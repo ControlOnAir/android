@@ -5,4 +5,7 @@
     <string name="home_page">Vos applications connectées</string>
     <string name="contact_title">Contacts</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="destinataire">Destinataire</string>
+    <string name="create_message">message</string>
+    <string name="conversation_title">Conversations</string>
 </resources>

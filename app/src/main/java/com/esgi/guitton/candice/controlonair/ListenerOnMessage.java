@@ -2,6 +2,7 @@ package com.esgi.guitton.candice.controlonair;
 
 import android.util.Log;
 
+import com.esgi.guitton.candice.controlonair.models.Message;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
