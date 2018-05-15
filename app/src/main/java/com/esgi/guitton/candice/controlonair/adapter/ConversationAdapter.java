@@ -8,42 +8,57 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.esgi.guitton.candice.controlonair.R;
-import com.esgi.guitton.candice.controlonair.models.Message;
+import com.esgi.guitton.candice.controlonair.models.Conversation;
 
 import java.util.List;
 
 
-public class MessageAdapter extends ArrayAdapter<Message> {
+public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
-        public MessageAdapter(Context context, List<Message> messages) {
-            super(context, 0, messages);
+    public interface OnConversationClickListener {
+        void onConversationClicked(long id);
+    }
+
+    private OnConversationClickListener onConversationClickListener;
+
+    public ConversationAdapter(Context context, List<Conversation> conversations, OnConversationClickListener onConversationClickListener) {
+        super(context, 0, conversations);
+        this.onConversationClickListener = onConversationClickListener;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        final Conversation conversation = getItem(position);
+
+
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.conversation_list_item, parent, false);
         }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        ConversationViewHolder viewHolder = (ConversationViewHolder) convertView.getTag();
+        if (viewHolder == null) {
+            viewHolder = new ConversationViewHolder();
+            viewHolder.contactName = (TextView) convertView.findViewById(R.id.contactName);
+            convertView.setTag(viewHolder);
+        }
 
-            Message message = getItem(position);
+        viewHolder.contactName.setText(conversation.getContact().getName());
 
-
-            if (convertView == null) {
-                int layout = message.isSent() ? R.layout.sent_content_message : R.layout.received_content_message;
-                convertView = LayoutInflater.from(getContext()).inflate(layout, parent, false);
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onConversationClickListener != null) {
+                    onConversationClickListener.onConversationClicked(conversation.getId());
+                }
             }
-
-            MessageViewHolder viewHolder = (MessageViewHolder) convertView.getTag();
-            if (viewHolder == null) {
-                viewHolder = new MessageViewHolder();
-                viewHolder.body = (TextView) convertView.findViewById(R.id.body);
-                convertView.setTag(viewHolder);
-            }
-
-            viewHolder.body.setText(message.getBody());
+        });
 
 
-            return convertView;
-        }
+        return convertView;
+    }
 
-        private class MessageViewHolder {
-            public TextView body;
-        }
+    private class ConversationViewHolder {
+        public TextView contactName;
+    }
 }

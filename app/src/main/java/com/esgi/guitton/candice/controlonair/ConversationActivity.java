@@ -23,9 +23,9 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         MessageService.getAllSms(this);
 
         ListView listView = findViewById(R.id.list_view_conversation);
-        ArrayList<Conversation> conversations = MessageService.getConversations(this);
+       ArrayList<Conversation> conversations = MessageService.getConversations(this);
         ConversationAdapter adapter = new ConversationAdapter(this, conversations, this);
-        listView.setAdapter(adapter);
+       // listView.setAdapter(adapter);
 
 /*
         // Write a message to the database

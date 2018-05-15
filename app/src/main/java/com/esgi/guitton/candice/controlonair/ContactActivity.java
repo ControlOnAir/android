@@ -7,13 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.esgi.guitton.candice.controlonair.adapter.ContactAdapter;
 import com.esgi.guitton.candice.controlonair.models.Contact;
 import com.esgi.guitton.candice.controlonair.services.ContactService;
 
 import java.util.ArrayList;
 
-public class ContactActivity extends AppCompatActivity {
+public class ContactActivity extends AppCompatActivity implements ContactAdapter.OnContactClickListener {
 
     ListView contacts;
 
@@ -24,12 +26,14 @@ public class ContactActivity extends AppCompatActivity {
 
         ListView contactsListView = findViewById(R.id.list_view_contact);
         ArrayList<Contact> contactList = ContactService.getContactList(getApplicationContext());
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1 ,contactList);
+        ContactAdapter adapter = new ContactAdapter(this,contactList, this);
         contactsListView.setAdapter(adapter);
     }
 
 
+    @Override
+    public void onContactClickListener(long id) {
+        Toast.makeText(this, "salut, t'as cliqué sur ce contact  " + id, Toast.LENGTH_SHORT).show();
 
-
-
+    }
 }

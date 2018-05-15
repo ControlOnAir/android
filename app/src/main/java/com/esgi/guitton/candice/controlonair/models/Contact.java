@@ -1,4 +1,4 @@
-package com.esgi.guitton.candice.controlonair;
+package com.esgi.guitton.candice.controlonair.models;
 
 /**
  * Created by candiceguitton on 07/04/2018.
