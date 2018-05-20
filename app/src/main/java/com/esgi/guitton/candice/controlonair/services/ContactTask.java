@@ -3,16 +3,29 @@ package com.esgi.guitton.candice.controlonair.services;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.provider.ContactsContract;
 
 import com.esgi.guitton.candice.controlonair.models.Contact;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ContactService {
+public class ContactTask extends AsyncTask<Context, Object, ArrayList<Contact>> {
 
-    public static ArrayList<Contact> getContactList(Context context) {
-        ContentResolver cr = context.getContentResolver();
+    public interface OnTaskCompleted {
+        void onTaskComplete(ArrayList<Contact> contacts);
+    }
+
+    private OnTaskCompleted listener;
+
+    public ContactTask(OnTaskCompleted listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    protected ArrayList<Contact> doInBackground(Context... contexts) {
+        ContentResolver cr = contexts[0].getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null, null);
         ArrayList<Contact> contacts = new ArrayList<Contact>();
@@ -41,9 +54,14 @@ public class ContactService {
                 }
             }
         }
-        if(cur!=null){
+        if (cur != null) {
             cur.close();
         }
         return contacts;
+    }
+
+    protected void onPostExecute(ArrayList<Contact> contacts) {
+        // your stuff
+        listener.onTaskComplete(contacts);
     }
 }

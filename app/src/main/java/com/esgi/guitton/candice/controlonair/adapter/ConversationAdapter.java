@@ -16,13 +16,13 @@ import java.util.List;
 public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
     public interface OnConversationClickListener {
-        void onConversationClicked(long id);
+        void onConversationClicked(Conversation conversation);
     }
 
     private OnConversationClickListener onConversationClickListener;
 
     public ConversationAdapter(Context context, List<Conversation> conversations, OnConversationClickListener onConversationClickListener) {
-        super(context, 0, conversations);
+        super(context, R.layout.conversation_list_item, conversations);
         this.onConversationClickListener = onConversationClickListener;
     }
 
@@ -31,25 +31,31 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
         final Conversation conversation = getItem(position);
 
-
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.conversation_list_item, parent, false);
         }
 
         ConversationViewHolder viewHolder = (ConversationViewHolder) convertView.getTag();
+
         if (viewHolder == null) {
             viewHolder = new ConversationViewHolder();
             viewHolder.contactName = (TextView) convertView.findViewById(R.id.contactName);
+            viewHolder.contactNumber = (TextView) convertView.findViewById(R.id.contactNumber);
             convertView.setTag(viewHolder);
         }
 
-        viewHolder.contactName.setText(conversation.getContact().getName());
+        if (conversation!= null && conversation.getContact() != null)
+        {
+            viewHolder.contactName.setText(conversation.getContact().getName());
+            viewHolder.contactNumber.setText(conversation.getContact().getNumber());
+        }
+
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onConversationClickListener != null) {
-                    onConversationClickListener.onConversationClicked(conversation.getId());
+                    onConversationClickListener.onConversationClicked(conversation);
                 }
             }
         });
@@ -60,5 +66,6 @@ public class ConversationAdapter extends ArrayAdapter<Conversation> {
 
     private class ConversationViewHolder {
         public TextView contactName;
+        public TextView contactNumber;
     }
 }

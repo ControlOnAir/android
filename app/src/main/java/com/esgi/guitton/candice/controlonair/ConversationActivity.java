@@ -1,58 +1,82 @@
 package com.esgi.guitton.candice.controlonair;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.esgi.guitton.candice.controlonair.adapter.ConversationAdapter;
-import com.esgi.guitton.candice.controlonair.models.Contact;
 import com.esgi.guitton.candice.controlonair.models.Conversation;
-import com.esgi.guitton.candice.controlonair.services.MessageService;
+import com.esgi.guitton.candice.controlonair.services.ConversationsTask;
 
 import java.util.ArrayList;
 
-public class ConversationActivity extends AppCompatActivity implements ConversationAdapter.OnConversationClickListener {
+public class ConversationActivity extends AppCompatActivity
+        implements ConversationAdapter.OnConversationClickListener, ConversationsTask.OnConversationsTaskCompleted {
+
+    private ListView contactsListView;
+    private ArrayList<Conversation> conversations;
+    private ProgressBar loader;
+    private LinearLayout emptyView;
+    private Button retryButton;
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
 
+        contactsListView = findViewById(R.id.list_view_conversation);
+        emptyView = findViewById(R.id.emptyView);
+        retryButton = findViewById(R.id.retryButton);
+        loader = findViewById(R.id.loader);
 
-        MessageService.getAllSms(this);
+        retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadConversations();
+            }
+        });
 
-        ListView listView = findViewById(R.id.list_view_conversation);
-       ArrayList<Conversation> conversations = MessageService.getConversations(this);
-        ConversationAdapter adapter = new ConversationAdapter(this, conversations, this);
-       // listView.setAdapter(adapter);
-
-/*
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference messagesReference = database.getReference("message");
-
-       // Contact app_contact = new Contact("Candice", "0625936281");
-        //Message firstMessage = new Message(app_contact, "");
-
-
-
-        //messagesReference.push().setValue(firstMessage);
-
-        ListenerOnMessage listener = new ListenerOnMessage();
-        // Read from the database
-       // messagesReference.addChildEventListener(listener);
-*/
-
+        conversations = new ArrayList<>();
+        loadConversations();
     }
 
+
+    private void loadConversations() {
+
+        contactsListView.setVisibility(View.GONE);
+        loader.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
+
+        ConversationsTask conversationsTask = new ConversationsTask(this);
+
+        conversationsTask.execute(this);
+    }
 
     @Override
-    public void onConversationClicked(long id) {
-        Toast.makeText(this, "salut, t'as cliqué sur la conv " + id, Toast.LENGTH_SHORT).show();
+    public void onConversationClicked(Conversation conversation) {
+        Toast.makeText(this, "salut love, t'as cliqué sur cette conversation  " + conversation.toString(), Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onTaskComplete(ArrayList<Conversation> conversations) {
+        this.conversations = conversations;
+        if (conversations.isEmpty()) {
+
+            contactsListView.setVisibility(View.GONE);
+            loader.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+
+        } else {
+            ConversationAdapter adapter = new ConversationAdapter(ConversationActivity.this, conversations, ConversationActivity.this);
+            contactsListView.setAdapter(adapter);
+            loader.setVisibility(View.GONE);
+            contactsListView.setVisibility(View.VISIBLE);
+        }
     }
 }
-
-
-
-

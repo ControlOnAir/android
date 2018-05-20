@@ -1,6 +1,7 @@
 package com.esgi.guitton.candice.controlonair.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,43 +17,54 @@ import java.util.List;
  * Created by candiceguitton on 08/04/2018.
  */
 
-public class ContactAdapter extends ArrayAdapter<Contact>{
-
-
-
+public class ContactAdapter extends ArrayAdapter<Contact> {
 
     public interface OnContactClickListener {
-        void onContactClickListener(long id);
+        void onContactClickListener(Contact id);
     }
 
     private ContactAdapter.OnContactClickListener onContactClickListener;
 
     public ContactAdapter(Context context, List<Contact> contacts, OnContactClickListener onContactClickListener) {
-        super(context, 0, contacts);
+        super(context, R.layout.contact_list_item, contacts);
         this.onContactClickListener = onContactClickListener;
     }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Contact contact = getItem(position);
-
-
         if (convertView == null) {
-            int layout =  R.layout.contact_list_item;
+            int layout = R.layout.contact_list_item;
             convertView = LayoutInflater.from(getContext()).inflate(layout, parent, false);
         }
 
         ContactAdapter.ContactViewHolder viewHolder = (ContactAdapter.ContactViewHolder) convertView.getTag();
+
         if (viewHolder == null) {
             viewHolder = new ContactAdapter.ContactViewHolder();
-            viewHolder.name = (TextView) convertView.findViewById(R.id.contactName);
-            viewHolder.number = (TextView) convertView.findViewById(R.id.contactNumber);
+            viewHolder.name = convertView.findViewById(R.id.contactName);
+            viewHolder.number = convertView.findViewById(R.id.contactNumber);
             convertView.setTag(viewHolder);
         }
 
-        viewHolder.name.setText(contact.getName());
-        viewHolder.number.setText(contact.getNumber());
 
+
+        final Contact contact = getItem(position);
+
+        String name = contact.getName();
+        String number = contact.getNumber();
+
+        viewHolder.name.setText(name);
+        viewHolder.number.setText(number);
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onContactClickListener != null) {
+                    onContactClickListener.onContactClickListener(contact);
+                }
+            }
+        });
 
         return convertView;
     }
