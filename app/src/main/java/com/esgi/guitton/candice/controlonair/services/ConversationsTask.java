@@ -29,10 +29,12 @@ public class ConversationsTask extends AsyncTask<Context, Object, ArrayList<Conv
     protected ArrayList<Conversation> doInBackground(Context... contexts) {
 
         final ArrayList<Conversation> conversations = new ArrayList<>();
+
+        String selection = "thread_id IS NOT NULL) GROUP BY (thread_id";
         Cursor cur = contexts[0].getContentResolver().query(
                 Uri.parse("content://sms/"),
                 new String[]{"thread_id", "address", "date"},
-                null,
+                selection,
                 null, null
         );
 
@@ -70,7 +72,7 @@ public class ConversationsTask extends AsyncTask<Context, Object, ArrayList<Conv
             return null;
         }
 
-        Contact contact = new Contact(null, phoneNumber);
+        Contact contact = new Contact(null, null ,phoneNumber);
         if (cursor.moveToFirst()) {
             final String contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
             contact.setName(contactName);

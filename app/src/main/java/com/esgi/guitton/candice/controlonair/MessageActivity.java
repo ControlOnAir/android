@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.esgi.guitton.candice.controlonair.services.MessageService;
+import com.esgi.guitton.candice.controlonair.services.MessagesTask;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -21,17 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessageActivity extends AppCompatActivity {
-    android.support.design.widget.FloatingActionButton create_message_button;
 
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
-        create_message_button = findViewById(R.id.create_message_button);
 
 
-        MessageService.getAllSms(this);
 
 
 /*
@@ -52,13 +50,7 @@ public class MessageActivity extends AppCompatActivity {
 */
 
 
-        create_message_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MessageActivity.this, SendMessageActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
 
     }

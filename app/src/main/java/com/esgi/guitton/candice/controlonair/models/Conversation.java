@@ -2,10 +2,11 @@ package com.esgi.guitton.candice.controlonair.models;
 
 import android.os.Build;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class Conversation {
+public class Conversation implements Serializable{
     private int id;
     private Contact contact;
     private long timestamp;

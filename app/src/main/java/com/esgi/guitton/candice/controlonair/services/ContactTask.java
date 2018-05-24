@@ -47,7 +47,7 @@ public class ContactTask extends AsyncTask<Context, Object, ArrayList<Contact>> 
                     while (pCur.moveToNext()) {
                         String number = pCur.getString(pCur.getColumnIndex(
                                 ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        Contact contact = new Contact(name, number);
+                        Contact contact = new Contact(id, name, number);
                         contacts.add(contact);
                     }
                     pCur.close();

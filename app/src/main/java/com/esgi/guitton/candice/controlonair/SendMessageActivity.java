@@ -3,7 +3,7 @@ package com.esgi.guitton.candice.controlonair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-class SendMessageActivity extends  AppCompatActivity {
+public class SendMessageActivity extends  AppCompatActivity {
 
      public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

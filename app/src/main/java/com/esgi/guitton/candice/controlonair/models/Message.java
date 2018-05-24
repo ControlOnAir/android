@@ -1,10 +1,12 @@
 package com.esgi.guitton.candice.controlonair.models;
 
+import java.io.Serializable;
+
 /**
  * Created by candiceguitton on 07/04/2018.
  */
 
-public class Message {
+public class Message implements Serializable{
     private int id;
     private Contact author;
     private String body;

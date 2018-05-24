@@ -6,23 +6,31 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.util.Log;
-
-import com.esgi.guitton.candice.controlonair.ConversationActivity;
-import com.esgi.guitton.candice.controlonair.MessageActivity;
+import com.esgi.guitton.candice.controlonair.models.Contact;
 import com.esgi.guitton.candice.controlonair.models.Conversation;
+import com.esgi.guitton.candice.controlonair.models.Message;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MessageService {
 
 
-    public static void getAllSms(Context context) {
+    public static List<Message> getAllSmsFromContact(Context context, String id) {
         Uri message = Uri.parse("content://sms/");
         ContentResolver cr = context.getContentResolver();
-        Cursor c = cr.query(message, null, "thread_id=" + 143, null, null);
+        Cursor c = cr.query(message, null, "thread_id=" + id, null, null);
         int totalSMS = c.getCount();
+        List<Message> messages = new ArrayList<>();
         if (c.moveToFirst()) {
             for (int i = 0; i < totalSMS; i++) {
+
+                int id_message = Integer.parseInt(c.getString(c.getColumnIndexOrThrow("_id")));
+                Contact contact_message = ConversationsTask.getContact(context, c.getString(c.getColumnIndexOrThrow("address")));
+                String body_message = c.getString(c.getColumnIndexOrThrow("body"));
+                long timestamp_message = Long.parseLong(c.getString(c.getColumnIndexOrThrow("date")));
+                Message message_list_item = new Message(id_message, contact_message, body_message, false, timestamp_message);
+                messages.add(message_list_item);
 
                 Log.d("SMScandice",
                         "Contact number : "
@@ -47,7 +55,7 @@ public class MessageService {
             }
         }
         c.close();
-
+        return messages;
     }
 
     public static String getContactName(Context context, String phoneNumber) {

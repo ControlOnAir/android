@@ -33,7 +33,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             MessageViewHolder viewHolder = (MessageViewHolder) convertView.getTag();
             if (viewHolder == null) {
                 viewHolder = new MessageViewHolder();
-                viewHolder.body = (TextView) convertView.findViewById(R.id.body);
+              //  viewHolder.body = (TextView) convertView.findViewById(R.id.body);
                 convertView.setTag(viewHolder);
             }
 
