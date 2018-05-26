@@ -39,6 +39,7 @@ public class MessageListAdapter extends RecyclerView.Adapter {
         TelephonyManager tMgr = (TelephonyManager)mContext.getSystemService(Context.TELEPHONY_SERVICE);
         @SuppressLint("MissingPermission")
         String mPhoneNumber = tMgr.getLine1Number();
+
         Message message = (Message) mMessageList.get(position);
 
         if (message.getAuthor().getNumber().equals(mPhoneNumber)) {

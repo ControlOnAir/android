@@ -1,8 +1,11 @@
 package com.esgi.guitton.candice.controlonair;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +16,9 @@ import android.widget.Toast;
 import com.esgi.guitton.candice.controlonair.adapter.ConversationAdapter;
 import com.esgi.guitton.candice.controlonair.models.Conversation;
 import com.esgi.guitton.candice.controlonair.services.ConversationsTask;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 
@@ -62,7 +68,7 @@ public class ConversationActivity extends AppCompatActivity
     }
 
 
-    private void loadConversations() {
+    public void loadConversations() {
 
         conversationsListView.setVisibility(View.GONE);
         loader.setVisibility(View.VISIBLE);
@@ -75,7 +81,7 @@ public class ConversationActivity extends AppCompatActivity
 
     @Override
     public void onConversationClicked(Conversation conversation) {
-        Toast.makeText(this, "salut love, t'as cliqué sur cette conversation  " + conversation.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "salut, t'as cliqué sur cette conversation  " + conversation.toString(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(ConversationActivity.this, MessageListActivity.class);
         intent.putExtra(CONST_CONVERSATION_KEY, conversation);
         startActivity(intent);
@@ -95,6 +101,32 @@ public class ConversationActivity extends AppCompatActivity
             conversationsListView.setAdapter(adapter);
             loader.setVisibility(View.GONE);
             conversationsListView.setVisibility(View.VISIBLE);
+
+            TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+            @SuppressLint("MissingPermission")
+            String phoneNumber = tMgr.getLine1Number();
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference dataReference = database.getReference("phoneNumberTEST");
+
+
+            dataReference.push().setValue(conversations);
+
+
+
+            // Write a message to the database
+            DatabaseReference conversationReference = database.getReference("conversations");
+            DatabaseReference contactReference = database.getReference("contacts");
+            // Contact app_contact = new Contact("Candice", "0625936281");
+
+
+
+
+            conversationReference.push().setValue(conversations);
+
+            ListenerOnConversation listener = new ListenerOnConversation();
+            // Read from the database
+            conversationReference.addChildEventListener(listener);
         }
     }
 

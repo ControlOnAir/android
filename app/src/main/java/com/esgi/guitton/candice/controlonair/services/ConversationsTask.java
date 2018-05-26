@@ -45,9 +45,7 @@ public class ConversationsTask extends AsyncTask<Context, Object, ArrayList<Conv
                 String address = cur.getString(cur.getColumnIndexOrThrow("address"));
                 String date = cur.getString(cur.getColumnIndexOrThrow("date"));
 
-                Log.i("thomasecalle", "conversation : " + thread_id
-                        + ",address : " + address
-                        + ", date: " + date);
+
 
                 Contact contact = getContact(contexts[0], address);
                 conversations.add(new Conversation(Integer.parseInt(thread_id), contact, Long.parseLong(date), null));

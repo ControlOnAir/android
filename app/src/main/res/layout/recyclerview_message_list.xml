@@ -5,10 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        android:id="@+id/text_view_contact"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toTopOf="@id/recyclerview_message_list"
+        />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview_message_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_contact"
+        app:layout_constraintBottom_toTopOf="@+id/send_text">
 
     </android.support.v7.widget.RecyclerView>
 
@@ -46,4 +54,22 @@
             android:text="@string/retry" />
 
     </LinearLayout>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/send_text"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/button_send"/>
+
+        <Button
+            android:id="@+id/button_send"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

@@ -5,13 +5,19 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 
 import com.esgi.guitton.candice.controlonair.models.Contact;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class ContactTask extends AsyncTask<Context, Object, ArrayList<Contact>> {
+
+public class ContactTask extends AsyncTask<Context, Object, ArrayList<Contact>>{
+
+
+
 
     public interface OnTaskCompleted {
         void onTaskComplete(ArrayList<Contact> contacts);
@@ -57,11 +63,15 @@ public class ContactTask extends AsyncTask<Context, Object, ArrayList<Contact>> 
         if (cur != null) {
             cur.close();
         }
+
         return contacts;
     }
 
     protected void onPostExecute(ArrayList<Contact> contacts) {
         // your stuff
+
+        Collections.sort(contacts);
+
         listener.onTaskComplete(contacts);
     }
 }

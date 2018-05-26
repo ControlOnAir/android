@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.esgi.guitton.candice.controlonair.adapter.ContactAdapter;
 import com.esgi.guitton.candice.controlonair.models.Contact;
 import com.esgi.guitton.candice.controlonair.services.ContactTask;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -60,11 +62,12 @@ public class ContactActivity extends AppCompatActivity
 
     @Override
     public void onContactClickListener(Contact contact) {
-        Toast.makeText(this, "salut love, t'as cliqué sur ce contact  " + contact.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "salut, t'as cliqué sur ce contact  " + contact.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onTaskComplete(ArrayList<Contact> contacts) {
+
         contactList = contacts;
         if (contactList.isEmpty()) {
 
@@ -72,11 +75,21 @@ public class ContactActivity extends AppCompatActivity
             loader.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
 
+
         } else {
             ContactAdapter adapter = new ContactAdapter(ContactActivity.this, contactList, ContactActivity.this);
             contactsListView.setAdapter(adapter);
             loader.setVisibility(View.GONE);
             contactsListView.setVisibility(View.VISIBLE);
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference contactReference = database.getReference("contacts");
+
+            contactReference.push().setValue(contacts);
+
+            ListenerOnConversation listener = new ListenerOnConversation();
+            // Read from the database
+            contactReference.addChildEventListener(listener);
+
         }
     }
 }

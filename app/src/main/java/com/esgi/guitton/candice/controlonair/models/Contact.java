@@ -1,12 +1,15 @@
 package com.esgi.guitton.candice.controlonair.models;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Created by candiceguitton on 07/04/2018.
  */
 
-public class Contact implements Serializable{
+public class Contact implements Serializable, Comparable<Contact> {
     private String id;
     private String name;
     private String number;
@@ -48,5 +51,11 @@ public class Contact implements Serializable{
                 "name='" + name + '\'' +
                 ", number='" + number + '\'' +
                 '}';
+    }
+
+
+    @Override
+    public int compareTo(@NonNull Contact o) {
+        return this.getName().compareTo(o.getName());
     }
 }
