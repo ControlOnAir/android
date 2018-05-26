@@ -2,14 +2,19 @@ package com.esgi.guitton.candice.controlonair.services;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import com.esgi.guitton.candice.controlonair.Constants;
+import com.esgi.guitton.candice.controlonair.Utils;
 import com.esgi.guitton.candice.controlonair.models.Contact;
 import com.esgi.guitton.candice.controlonair.models.Conversation;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -46,9 +51,19 @@ public class ConversationsTask extends AsyncTask<Context, Object, ArrayList<Conv
                 String date = cur.getString(cur.getColumnIndexOrThrow("date"));
 
 
-
                 Contact contact = getContact(contexts[0], address);
-                conversations.add(new Conversation(Integer.parseInt(thread_id), contact, Long.parseLong(date), null));
+                Conversation conversation = new Conversation(Integer.parseInt(thread_id), contact, Long.parseLong(date), null);
+
+                conversations.add(conversation);
+
+                FirebaseDatabase database = Utils.getDatabase();
+                SharedPreferences sharedPreferences = contexts[0].getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+                String userNode = sharedPreferences.getString(Constants.GENERATED_PRIVATE_KEY, "plop");
+
+                DatabaseReference dataReference = database.getReference("users").child(userNode).child("conversations");
+
+
+                dataReference.child(String.valueOf(conversation.getId())).setValue(conversation);
             }
         }
         if (cur != null) {
@@ -70,7 +85,7 @@ public class ConversationsTask extends AsyncTask<Context, Object, ArrayList<Conv
             return null;
         }
 
-        Contact contact = new Contact(null, null ,phoneNumber);
+        Contact contact = new Contact(null, null, phoneNumber);
         if (cursor.moveToFirst()) {
             final String contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
             contact.setName(contactName);

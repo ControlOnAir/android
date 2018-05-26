@@ -30,29 +30,6 @@ public class MessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_message);
 
 
-
-
-/*
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference messagesReference = database.getReference("message");
-
-       // Contact app_contact = new Contact("Candice", "0625936281");
-        //Message firstMessage = new Message(app_contact, "");
-
-
-
-        //messagesReference.push().setValue(firstMessage);
-
-        ListenerOnMessage listener = new ListenerOnMessage();
-        // Read from the database
-       // messagesReference.addChildEventListener(listener);
-*/
-
-
-
-
-
     }
 
 

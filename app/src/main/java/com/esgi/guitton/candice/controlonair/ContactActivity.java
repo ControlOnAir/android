@@ -81,14 +81,6 @@ public class ContactActivity extends AppCompatActivity
             contactsListView.setAdapter(adapter);
             loader.setVisibility(View.GONE);
             contactsListView.setVisibility(View.VISIBLE);
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference contactReference = database.getReference("contacts");
-
-            contactReference.push().setValue(contacts);
-
-            ListenerOnConversation listener = new ListenerOnConversation();
-            // Read from the database
-            contactReference.addChildEventListener(listener);
 
         }
     }

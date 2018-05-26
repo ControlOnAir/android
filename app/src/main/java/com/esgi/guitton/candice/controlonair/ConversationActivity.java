@@ -105,28 +105,6 @@ public class ConversationActivity extends AppCompatActivity
             TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
             @SuppressLint("MissingPermission")
             String phoneNumber = tMgr.getLine1Number();
-
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference dataReference = database.getReference("phoneNumberTEST");
-
-
-            dataReference.push().setValue(conversations);
-
-
-
-            // Write a message to the database
-            DatabaseReference conversationReference = database.getReference("conversations");
-            DatabaseReference contactReference = database.getReference("contacts");
-            // Contact app_contact = new Contact("Candice", "0625936281");
-
-
-
-
-            conversationReference.push().setValue(conversations);
-
-            ListenerOnConversation listener = new ListenerOnConversation();
-            // Read from the database
-            conversationReference.addChildEventListener(listener);
         }
     }
 

@@ -88,12 +88,6 @@ public class MessageListActivity extends AppCompatActivity implements MessagesTa
             loader.setVisibility(View.GONE);
             messageRecycler.setVisibility(View.VISIBLE);
 
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference dataReference = database.getReference("phoneNumberTEST");
-            dataReference.push().setValue(messages);
-
-
-
         }
     }
 }

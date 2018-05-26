@@ -2,12 +2,17 @@ package com.esgi.guitton.candice.controlonair.services;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 
+import com.esgi.guitton.candice.controlonair.Constants;
+import com.esgi.guitton.candice.controlonair.Utils;
 import com.esgi.guitton.candice.controlonair.models.Contact;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,6 +60,14 @@ public class ContactTask extends AsyncTask<Context, Object, ArrayList<Contact>>{
                                 ContactsContract.CommonDataKinds.Phone.NUMBER));
                         Contact contact = new Contact(id, name, number);
                         contacts.add(contact);
+                        FirebaseDatabase database = Utils.getDatabase();
+                        SharedPreferences sharedPreferences = contexts[0].getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
+                        String userNode = sharedPreferences.getString(Constants.GENERATED_PRIVATE_KEY, "plop");
+
+                        DatabaseReference dataReference = database.getReference(Constants.USERS_NODE).child(userNode).child(Constants.CONTACTS_NODE);
+
+
+                        dataReference.child(contact.getId()).setValue(contact);
                     }
                     pCur.close();
                 }
