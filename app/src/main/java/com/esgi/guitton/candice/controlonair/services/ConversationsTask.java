@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
-import android.util.Log;
 
 import com.esgi.guitton.candice.controlonair.Constants;
 import com.esgi.guitton.candice.controlonair.Utils;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
 public class ConversationsTask extends AsyncTask<Context, Object, ArrayList<Conversation>> {
 
     public interface OnConversationsTaskCompleted {
-        void onTaskComplete(ArrayList<Conversation> conversations);
+        void onConversationsTaskComplete(ArrayList<Conversation> conversations);
     }
 
     private OnConversationsTaskCompleted listener;
@@ -74,7 +73,7 @@ public class ConversationsTask extends AsyncTask<Context, Object, ArrayList<Conv
 
     protected void onPostExecute(ArrayList<Conversation> conversations) {
         // your stuff
-        listener.onTaskComplete(conversations);
+        listener.onConversationsTaskComplete(conversations);
     }
 
     public static Contact getContact(Context context, String phoneNumber) {

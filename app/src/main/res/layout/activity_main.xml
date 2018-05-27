@@ -1,98 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.esgi.guitton.candice.controlonair.MainActivity">
 
-    <TextView
-        android:id="@+id/home_page"
-        style="@style/message_title"
+    <include layout="@layout/toolbar" />
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:backgroundTint="@color/babyBlue"
-        android:gravity="center"
-        android:text="@string/home_page"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_height="match_parent">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/message_card"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        app:cardBackgroundColor="@color/babyBlue"
-        app:layout_constraintLeft_toRightOf="@+id/guideline_vertical_left"
-        app:layout_constraintRight_toLeftOf="@+id/guideline_vertical_right"
-        app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal">
+        <Button
+            android:id="@+id/loadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Charger toutes mes données"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/message"
+        <ProgressBar
+            android:id="@+id/loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/resultLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:context="com.esgi.guitton.candice.controlonair.MainActivity">
 
-            <ImageView
+            <android.support.v7.widget.CardView
+                android:id="@+id/conversations_card"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                app:cardBackgroundColor="@color/babyBlue"
+                app:layout_constraintLeft_toRightOf="@+id/guideline_vertical_left"
+                app:layout_constraintRight_toLeftOf="@+id/guideline_vertical_right"
+                app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/message"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:src="@drawable/close_envelope"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/contact_card"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="50dp"
+                app:cardBackgroundColor="@color/babyBlue"
+                app:layout_constraintLeft_toRightOf="@+id/guideline_vertical_left"
+                app:layout_constraintRight_toLeftOf="@+id/guideline_vertical_right"
+                app:layout_constraintTop_toBottomOf="@+id/conversations_card">
+
+
+                <ImageView
+                    android:id="@+id/contact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:src="@drawable/phone_book"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline_vertical_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:src="@drawable/close_envelope"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.10" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline_vertical_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.90" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.30" />
+
 
         </android.support.constraint.ConstraintLayout>
 
-    </android.support.v7.widget.CardView>
+    </android.support.constraint.ConstraintLayout>
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/contact_card"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="50dp"
-        app:cardBackgroundColor="@color/babyBlue"
-        app:layout_constraintLeft_toRightOf="@+id/guideline_vertical_left"
-        app:layout_constraintRight_toLeftOf="@+id/guideline_vertical_right"
-        app:layout_constraintTop_toBottomOf="@+id/message_card">
-
-
-        <ImageView
-            android:id="@+id/contact"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:src="@drawable/phone_book"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline_vertical_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.10" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline_vertical_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.90" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.30" />
-
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

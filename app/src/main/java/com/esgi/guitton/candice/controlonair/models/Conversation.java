@@ -19,6 +19,8 @@ public class Conversation implements Serializable{
         this.messages = messages;
     }
 
+    public Conversation(){}
+
     public int getId() {
         return id;
     }

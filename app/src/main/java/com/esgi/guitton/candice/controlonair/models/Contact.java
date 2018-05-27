@@ -21,6 +21,9 @@ public class Contact implements Serializable, Comparable<Contact> {
         this.number = number;
     }
 
+    public Contact() {
+    }
+
     public String getId() {
         return id;
     }

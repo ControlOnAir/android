@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Pair;
-import android.view.View;
 
 import com.esgi.guitton.candice.controlonair.Constants;
 import com.esgi.guitton.candice.controlonair.Utils;
@@ -18,12 +17,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MessagesTask extends AsyncTask<Pair<Integer, Context>, Object, ArrayList<Message>> {
 
     public interface OnMessagesTaskCompleted {
-        void onTaskComplete(ArrayList<Message> messages);
+        void onMessagesTaskComplete(ArrayList<Message> messages);
     }
 
     private OnMessagesTaskCompleted listener;
@@ -65,7 +63,7 @@ public class MessagesTask extends AsyncTask<Pair<Integer, Context>, Object, Arra
 
                 DatabaseReference dataReference = database.getReference(Constants.USERS_NODE).child(userNode).child(Constants.MESSAGES_NODE);
 
-                dataReference.child(String.valueOf(idConversation)).push().setValue(message_list_item);
+                dataReference.child(String.valueOf(idConversation)).child(String.valueOf(message_list_item.getTimestamp())).setValue(message_list_item);
 
 
                 c.moveToNext();
@@ -78,7 +76,7 @@ public class MessagesTask extends AsyncTask<Pair<Integer, Context>, Object, Arra
 
     @Override
     protected void onPostExecute(ArrayList<Message> messages) {
-        listener.onTaskComplete(messages);
+        listener.onMessagesTaskComplete(messages);
     }
 
 

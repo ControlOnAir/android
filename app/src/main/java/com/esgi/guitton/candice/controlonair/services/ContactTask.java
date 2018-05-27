@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 
 import com.esgi.guitton.candice.controlonair.Constants;
 import com.esgi.guitton.candice.controlonair.Utils;
@@ -16,7 +15,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 
 public class ContactTask extends AsyncTask<Context, Object, ArrayList<Contact>>{
@@ -25,7 +23,7 @@ public class ContactTask extends AsyncTask<Context, Object, ArrayList<Contact>>{
 
 
     public interface OnTaskCompleted {
-        void onTaskComplete(ArrayList<Contact> contacts);
+        void onContactTaskComplete(ArrayList<Contact> contacts);
     }
 
     private OnTaskCompleted listener;
@@ -85,6 +83,6 @@ public class ContactTask extends AsyncTask<Context, Object, ArrayList<Contact>>{
 
         Collections.sort(contacts);
 
-        listener.onTaskComplete(contacts);
+        listener.onContactTaskComplete(contacts);
     }
 }

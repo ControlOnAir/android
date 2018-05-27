@@ -21,6 +21,8 @@ public class Message implements Serializable{
         this.timestamp = timestamp;
     }
 
+    public Message(){}
+
     public boolean isSent() {
         return sent;
     }

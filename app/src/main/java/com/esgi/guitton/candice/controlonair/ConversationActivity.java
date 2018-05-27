@@ -1,37 +1,40 @@
 package com.esgi.guitton.candice.controlonair;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
-import com.esgi.guitton.candice.controlonair.adapter.ConversationAdapter;
+
 import com.esgi.guitton.candice.controlonair.models.Conversation;
-import com.esgi.guitton.candice.controlonair.services.ConversationsTask;
+import com.esgi.guitton.candice.controlonair.view_holder.ConversationViewHolder;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
+import com.google.firebase.database.Query;
 
 
-public class ConversationActivity extends AppCompatActivity
-        implements ConversationAdapter.OnConversationClickListener, ConversationsTask.OnConversationsTaskCompleted {
+public class ConversationActivity extends AppCompatActivity implements ConversationViewHolder.OnConversationClickListener {
 
     private EditText editTextSearch;
-    private ListView conversationsListView;
-    private ArrayList<Conversation> conversations;
-    private ProgressBar loader;
-    private LinearLayout emptyView;
-    private Button retryButton;
-    android.support.design.widget.FloatingActionButton create_message_button;
+    private RecyclerView conversationsRecyclerView;
+    private FloatingActionButton create_message_button;
+    private Toolbar toolbar;
+    private RecyclerView.LayoutManager layoutManager;
+    private DatabaseReference conversationsReference;
+    private FirebaseRecyclerAdapter<Conversation, ConversationViewHolder> adapter;
+
+
     public final static String CONST_CONVERSATION_KEY = "conversation";
 
     public void onCreate(Bundle savedInstanceState) {
@@ -41,21 +44,17 @@ public class ConversationActivity extends AppCompatActivity
         create_message_button = findViewById(R.id.create_message_button);
         editTextSearch = findViewById(R.id.edit_text_search);
 
-        conversationsListView = findViewById(R.id.list_view_conversation);
-        emptyView = findViewById(R.id.emptyView);
-        retryButton = findViewById(R.id.retryButton);
-        loader = findViewById(R.id.loader);
+        conversationsRecyclerView = findViewById(R.id.list_view_conversation);
 
-        retryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadConversations();
-            }
-        });
+        toolbar = findViewById(R.id.toolbar);
+        TextView title = toolbar.findViewById(R.id.title);
+        title.setText(R.string.conversation_title);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        conversations = new ArrayList<>();
-        loadConversations();
-
+        //afficher le bouton retour
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         create_message_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,18 +64,60 @@ public class ConversationActivity extends AppCompatActivity
             }
         });
 
+        conversationsReference = Utils.getDatabase().getReferenceFromUrl(Constants.CONVERSATIONS_FIREBASE_URL_REFERENCE);
+
+        Query query = conversationsReference.orderByKey();
+
+        FirebaseRecyclerOptions<Conversation> options = new FirebaseRecyclerOptions.Builder<Conversation>().setQuery(query, Conversation.class).build();
+
+        setupAdapter(options);
+
+        conversationsRecyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        conversationsRecyclerView.setLayoutManager(layoutManager);
+        conversationsRecyclerView.setAdapter(adapter);
     }
 
+    private void setupAdapter(FirebaseRecyclerOptions<Conversation> options) {
+        adapter = new FirebaseRecyclerAdapter<Conversation, ConversationViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull ConversationViewHolder holder, int position, @NonNull Conversation conversation) {
+                holder.bind(conversation);
+            }
 
-    public void loadConversations() {
+            @NonNull
+            @Override
+            public ConversationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.conversation_list_item, parent, false);
+                return new ConversationViewHolder(view, ConversationActivity.this);
+            }
+        };
+    }
 
-        conversationsListView.setVisibility(View.GONE);
-        loader.setVisibility(View.VISIBLE);
-        emptyView.setVisibility(View.GONE);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (adapter != null) {
+            adapter.startListening();
+        }
+    }
 
-        ConversationsTask conversationsTask = new ConversationsTask(this);
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (adapter != null) {
+            adapter.stopListening();
+        }
+    }
 
-        conversationsTask.execute(this);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -85,27 +126,6 @@ public class ConversationActivity extends AppCompatActivity
         Intent intent = new Intent(ConversationActivity.this, MessageListActivity.class);
         intent.putExtra(CONST_CONVERSATION_KEY, conversation);
         startActivity(intent);
-    }
-
-    @Override
-    public void onTaskComplete(ArrayList<Conversation> conversations) {
-        this.conversations = conversations;
-        if (conversations.isEmpty()) {
-
-            conversationsListView.setVisibility(View.GONE);
-            loader.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
-
-        } else {
-            ConversationAdapter adapter = new ConversationAdapter(ConversationActivity.this, conversations, ConversationActivity.this);
-            conversationsListView.setAdapter(adapter);
-            loader.setVisibility(View.GONE);
-            conversationsListView.setVisibility(View.VISIBLE);
-
-            TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
-            @SuppressLint("MissingPermission")
-            String phoneNumber = tMgr.getLine1Number();
-        }
     }
 
 
