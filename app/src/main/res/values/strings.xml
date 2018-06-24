@@ -11,7 +11,4 @@
     <string name="empty_contacts">Kikou, t\'as pas d\'amis</string>
     <string name="retry">Réessayer</string>
     <string name="empty_conversations">kikou, t\'as pas de messages</string>
-    <string name="permissions_rational_message">Nous avons besoin de ces permissions pour le bon fonctionnement de l\'application</string>
-    <string name="ok">Ok</string>
-    <string name="cancel">Refuser</string>
 </resources>
