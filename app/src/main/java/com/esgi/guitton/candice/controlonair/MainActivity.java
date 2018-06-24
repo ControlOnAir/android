@@ -2,6 +2,7 @@ package com.esgi.guitton.candice.controlonair;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements ContactTask.OnTas
 
     }
 
-    @Override
+   @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         // NOTE: delegate the permission handling to generated method
@@ -122,8 +123,18 @@ public class MainActivity extends AppCompatActivity implements ContactTask.OnTas
     void showRationaleForLoadEverything(final PermissionRequest request) {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.permissions_rational_message)
-                .setPositiveButton(R.string.ok, (dialog, button) -> request.proceed())
-                .setNegativeButton(R.string.cancel, (dialog, button) -> request.cancel())
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        request.proceed();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        request.cancel();
+                    }
+                })
                 .show();
     }
 
