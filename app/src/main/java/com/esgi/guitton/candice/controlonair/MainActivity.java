@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements ContactTask.OnTas
     private ConstraintLayout resultLayout;
     private CardView conversationsCard;
     private CardView contactCard;
+    private CardView fileCard;
+    private CardView webCard;
     private Toolbar toolbar;
 
     private String privateKey;
@@ -54,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements ContactTask.OnTas
         resultLayout = findViewById(R.id.resultLayout);
         conversationsCard = findViewById(R.id.conversations_card);
         contactCard = findViewById(R.id.contact_card);
+        webCard = findViewById(R.id.web_card);
+        fileCard = findViewById(R.id.file_card);
 
         toolbar = findViewById(R.id.toolbar);
 
@@ -75,6 +79,24 @@ public class MainActivity extends AppCompatActivity implements ContactTask.OnTas
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, ContactActivity.class));
+            }
+        });
+        /*fileCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, FileActivity.class));
+            }
+        });*/
+        webCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                privateKey = generatePrivateKey();
+
+                SharedPreferences sharedPreferences = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
+                sharedPreferences.edit().putString(Constants.GENERATED_PRIVATE_KEY, privateKey).apply();
+
+                startActivity(new Intent(MainActivity.this, DesktopActivity.class));
             }
         });
 
@@ -181,6 +203,6 @@ public class MainActivity extends AppCompatActivity implements ContactTask.OnTas
         loader.setVisibility(View.GONE);
         resultLayout.setVisibility(View.VISIBLE);
 
-        Toast.makeText(MainActivity.this, "Votre clé privée : " + privateKey, Toast.LENGTH_LONG).show();
+        //Toast.makeText(MainActivity.this, "Votre clé privée : " + privateKey, Toast.LENGTH_LONG).show();
     }
 }

@@ -14,4 +14,6 @@
     <string name="permissions_rational_message">Nous avons besoin de ces permissions pour le bon fonctionnement de l\'application</string>
     <string name="ok">Ok</string>
     <string name="cancel">Refuser</string>
+    <string name="send_data">Synchroniser les données</string>
+    <string name="privateKey">Pour vous connecter sur la plateforme web, veuillez entrer ce code</string>
 </resources>
