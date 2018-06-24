@@ -1,11 +1,14 @@
 package com.esgi.guitton.candice.controlonair;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -25,12 +28,18 @@ import com.esgi.guitton.candice.controlonair.services.MessagesTask;
 
 import java.util.ArrayList;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class MainActivity extends AppCompatActivity implements ContactTask.OnTaskCompleted, ConversationsTask.OnConversationsTaskCompleted {
     private Button loadButton;
     private ProgressBar loader;
     private ConstraintLayout resultLayout;
     private CardView conversationsCard;
+    private CardView contactCard;
     private Toolbar toolbar;
 
     private String privateKey;
@@ -43,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements ContactTask.OnTas
         loader = findViewById(R.id.loader);
         resultLayout = findViewById(R.id.resultLayout);
         conversationsCard = findViewById(R.id.conversations_card);
+        contactCard = findViewById(R.id.contact_card);
 
         toolbar = findViewById(R.id.toolbar);
 
@@ -53,11 +63,17 @@ public class MainActivity extends AppCompatActivity implements ContactTask.OnTas
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
-
         conversationsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, ConversationActivity.class));
+            }
+        });
+
+        contactCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ContactActivity.class));
             }
         });
 
@@ -72,11 +88,43 @@ public class MainActivity extends AppCompatActivity implements ContactTask.OnTas
                 SharedPreferences sharedPreferences = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
                 sharedPreferences.edit().putString(Constants.GENERATED_PRIVATE_KEY, privateKey).apply();
 
-                ContactTask contactTask = new ContactTask(MainActivity.this);
-                contactTask.execute(MainActivity.this);
+                MainActivityPermissionsDispatcher.loadEveythingWithPermissionCheck(MainActivity.this);
             }
         });
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+
+    @NeedsPermission({Manifest.permission.READ_SMS,
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_CONTACTS,
+            Manifest.permission.WRITE_CONTACTS,
+    })
+    public void loadEveything() {
+        ContactTask contactTask = new ContactTask(MainActivity.this);
+        contactTask.execute(MainActivity.this);
+    }
+
+    @OnShowRationale({Manifest.permission.READ_SMS,
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_CONTACTS,
+            Manifest.permission.WRITE_CONTACTS,
+    })
+    void showRationaleForLoadEverything(final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.permissions_rational_message)
+                .setPositiveButton(R.string.ok, (dialog, button) -> request.proceed())
+                .setNegativeButton(R.string.cancel, (dialog, button) -> request.cancel())
+                .show();
     }
 
     private String generatePrivateKey() {
