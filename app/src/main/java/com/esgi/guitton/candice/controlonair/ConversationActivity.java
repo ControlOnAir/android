@@ -1,6 +1,7 @@
 package com.esgi.guitton.candice.controlonair;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -64,7 +65,11 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             }
         });
 
-        conversationsReference = Utils.getDatabase().getReferenceFromUrl(Constants.CONVERSATIONS_FIREBASE_URL_REFERENCE);
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
+        String privateKey = sharedPreferences.getString(Constants.GENERATED_PRIVATE_KEY, "");
+        String conversationUrl = getString(R.string.conversation_firebase_url_reference, privateKey);
+
+        conversationsReference = Utils.getDatabase().getReferenceFromUrl(conversationUrl);
 
         Query query = conversationsReference.orderByKey();
 
@@ -122,7 +127,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
     @Override
     public void onConversationClicked(Conversation conversation) {
-        Toast.makeText(this, "salut, t'as cliqué sur cette conversation  " + conversation.toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "salut, t'as cliqué sur cette conversation  " + conversation.toString(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(ConversationActivity.this, MessageListActivity.class);
         intent.putExtra(CONST_CONVERSATION_KEY, conversation);
         startActivity(intent);

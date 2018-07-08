@@ -17,9 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class ContactTask extends AsyncTask<Context, Object, ArrayList<Contact>>{
-
-
+public class ContactTask extends AsyncTask<Context, Object, ArrayList<Contact>> {
 
 
     public interface OnTaskCompleted {
@@ -36,7 +34,7 @@ public class ContactTask extends AsyncTask<Context, Object, ArrayList<Contact>>{
     protected ArrayList<Contact> doInBackground(Context... contexts) {
         ContentResolver cr = contexts[0].getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
-                null, null, null, null);
+                null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
         ArrayList<Contact> contacts = new ArrayList<Contact>();
 
         if ((cur != null ? cur.getCount() : 0) > 0) {

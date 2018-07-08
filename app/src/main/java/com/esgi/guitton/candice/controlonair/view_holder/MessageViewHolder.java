@@ -13,7 +13,13 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
         void onMessageClicked(Message message);
     }
 
-    private TextView messageBody;
+    private TextView sentMessageText;
+    private TextView sentMessageDate;
+
+    private TextView receivedMessageText;
+    private TextView receivedMessageDate;
+
+
     private OnMessageClickListener listener;
 
     //itemView est la vue correspondante à 1 cellule
@@ -21,14 +27,34 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         this.listener = listener;
 
-        messageBody = (TextView) itemView.findViewById(R.id.text_message_body);
+        sentMessageText = itemView.findViewById(R.id.sentMessageText);
+        sentMessageDate = itemView.findViewById(R.id.sentMessageDate);
+
+        receivedMessageText = itemView.findViewById(R.id.receivedMessageText);
+        receivedMessageDate = itemView.findViewById(R.id.receivedMessageDate);
 
     }
 
     //puis ajouter une fonction pour remplir la cellule en fonction d'un MyObject
     public void bind(final Message message) {
 
-        messageBody.setText(message.getBody());
+        if (message.isSent()) {
+            sentMessageText.setVisibility(View.VISIBLE);
+            sentMessageDate.setVisibility(View.VISIBLE);
+
+            sentMessageText.setText(message.getBody());
+
+            receivedMessageDate.setVisibility(View.GONE);
+            receivedMessageText.setVisibility(View.GONE);
+        } else {
+            receivedMessageText.setVisibility(View.VISIBLE);
+            receivedMessageDate.setVisibility(View.VISIBLE);
+
+            receivedMessageText.setText(message.getBody());
+
+            sentMessageText.setVisibility(View.GONE);
+            sentMessageDate.setVisibility(View.GONE);
+        }
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override

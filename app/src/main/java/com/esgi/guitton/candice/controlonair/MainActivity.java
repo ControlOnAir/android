@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.esgi.guitton.candice.controlonair.models.Contact;
 import com.esgi.guitton.candice.controlonair.models.Conversation;
@@ -81,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements ContactTask.OnTas
                 startActivity(new Intent(MainActivity.this, ContactActivity.class));
             }
         });
+
         /*fileCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,11 +90,6 @@ public class MainActivity extends AppCompatActivity implements ContactTask.OnTas
         webCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                privateKey = generatePrivateKey();
-
-                SharedPreferences sharedPreferences = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
-                sharedPreferences.edit().putString(Constants.GENERATED_PRIVATE_KEY, privateKey).apply();
 
                 startActivity(new Intent(MainActivity.this, DesktopActivity.class));
             }
@@ -117,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements ContactTask.OnTas
 
     }
 
-   @Override
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         // NOTE: delegate the permission handling to generated method
@@ -162,7 +157,8 @@ public class MainActivity extends AppCompatActivity implements ContactTask.OnTas
 
     private String generatePrivateKey() {
         String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
+        sharedPreferences.edit().putString(Constants.GENERATED_PRIVATE_KEY, privateKey).apply();
         return android_id;
     }
 
@@ -177,6 +173,10 @@ public class MainActivity extends AppCompatActivity implements ContactTask.OnTas
     @Override
     public void onConversationsTaskComplete(final ArrayList<Conversation> conversations) {
 
+        if (conversations.isEmpty()) {
+            onLoadCompleted();
+            return;
+        }
         for (int i = 0; i < conversations.size(); i++) {
 
             final int index = i;
@@ -192,7 +192,8 @@ public class MainActivity extends AppCompatActivity implements ContactTask.OnTas
             });
 
             Pair<Integer, Context> pair = new Pair<>(conversation.getId(), MainActivity.this.getBaseContext());
-            messagesTask.execute(pair);
+            MessagesTask.MessagesTaskParams messagesTaskParams = new MessagesTask.MessagesTaskParams(MainActivity.this.getBaseContext(), conversation.getContact().getNumber(), conversation.getId());
+            messagesTask.execute(messagesTaskParams);
 
         }
 

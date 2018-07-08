@@ -1,6 +1,5 @@
 package com.esgi.guitton.candice.controlonair.view_holder;
 
-import android.provider.Telephony;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;

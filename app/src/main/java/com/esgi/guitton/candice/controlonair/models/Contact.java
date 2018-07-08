@@ -3,7 +3,6 @@ package com.esgi.guitton.candice.controlonair.models;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
-import java.util.Comparator;
 
 /**
  * Created by candiceguitton on 07/04/2018.

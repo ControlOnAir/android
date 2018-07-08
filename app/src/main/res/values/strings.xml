@@ -16,4 +16,12 @@
     <string name="cancel">Refuser</string>
     <string name="send_data">Synchroniser les données</string>
     <string name="privateKey">Pour vous connecter sur la plateforme web, veuillez entrer ce code</string>
+    <string name="contact_firebase_url_reference">https://controlonairapp.firebaseio.com/users/%1$s/contacts</string>
+    <string name="conversation_firebase_url_reference">https://controlonairapp.firebaseio.com/users/%1$s/conversations</string>
+    <string name="message_firebase_url_reference">https://controlonairapp.firebaseio.com/users/%1$s/messages/%2$s</string>
+    <string name="to">À :</string>
+    <string name="new_message_title">Nouveau message</string>
+    <string name="mobile">téléphone</string>
+    <string name="modify_contact">modifier</string>
+    <string name="delete_contact">supprimer</string>
 </resources>

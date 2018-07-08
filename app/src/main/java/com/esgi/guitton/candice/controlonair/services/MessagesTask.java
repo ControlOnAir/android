@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.util.Pair;
 
 import com.esgi.guitton.candice.controlonair.Constants;
 import com.esgi.guitton.candice.controlonair.Utils;
@@ -18,10 +17,22 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class MessagesTask extends AsyncTask<Pair<Integer, Context>, Object, ArrayList<Message>> {
+public class MessagesTask extends AsyncTask<MessagesTask.MessagesTaskParams, Object, ArrayList<Message>> {
 
     public interface OnMessagesTaskCompleted {
         void onMessagesTaskComplete(ArrayList<Message> messages);
+    }
+
+    public static class MessagesTaskParams {
+        private final Context context;
+        private final String contactNumber;
+        private final int converdationId;
+
+        public MessagesTaskParams(Context context, String contactNumber, int converdationId) {
+            this.context = context;
+            this.contactNumber = contactNumber;
+            this.converdationId = converdationId;
+        }
     }
 
     private OnMessagesTaskCompleted listener;
@@ -31,14 +42,16 @@ public class MessagesTask extends AsyncTask<Pair<Integer, Context>, Object, Arra
     }
 
     @Override
-    protected ArrayList<Message> doInBackground(Pair<Integer, Context>... pairs) {
-        Uri message = Uri.parse("content://sms/");
-        Context context = pairs[0].second;
-        Integer idConversation = pairs[0].first;
+    protected ArrayList<Message> doInBackground(MessagesTaskParams... params) {
+        Uri messageUri = Uri.parse("content://sms/");
+        Context context = params[0].context;
+        Integer idConversation = params[0].converdationId;
+        String contactNumber = params[0].contactNumber;
+
         ContentResolver cr = context.getContentResolver();
 
 
-        Cursor c = cr.query(message, null, "thread_id=" + idConversation, null, "date ASC");
+        Cursor c = cr.query(messageUri, null, "thread_id=" + idConversation, null, "date DESC");
         int totalSMS = c.getCount();
         ArrayList<Message> messages = new ArrayList<>();
         System.out.println(messages + " kikou");
@@ -50,12 +63,16 @@ public class MessagesTask extends AsyncTask<Pair<Integer, Context>, Object, Arra
                 String body_message = c.getString(c.getColumnIndexOrThrow("body"));
                 long timestamp_message = Long.parseLong(c.getString(c.getColumnIndexOrThrow("date")));
 
-                Message message_list_item = new Message(id_message, contact_message, body_message, false, timestamp_message);
+                String protocol = c.getString(c.getColumnIndex("protocol"));
 
-                Log.i("mimp", message.toString());
+                boolean isSentByUser = protocol == null;
+
+                Message message = new Message(id_message, contact_message, body_message, isSentByUser, timestamp_message);
+
+                Log.i("mimp", messageUri.toString());
 
 
-                messages.add(message_list_item);
+                messages.add(message);
 
                 FirebaseDatabase database = Utils.getDatabase();
                 SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE);
@@ -63,7 +80,12 @@ public class MessagesTask extends AsyncTask<Pair<Integer, Context>, Object, Arra
 
                 DatabaseReference dataReference = database.getReference(Constants.USERS_NODE).child(userNode).child(Constants.MESSAGES_NODE);
 
-                dataReference.child(String.valueOf(idConversation)).child(String.valueOf(message_list_item.getTimestamp())).setValue(message_list_item);
+                String formattedAdress = contactNumber;
+                if (contactNumber.contains("+")) {
+                    formattedAdress = contactNumber.replace("+", "a");
+                }
+
+                dataReference.child(String.valueOf(formattedAdress)).child(String.valueOf(message.getTimestamp())).setValue(message);
 
 
                 c.moveToNext();
@@ -72,6 +94,8 @@ public class MessagesTask extends AsyncTask<Pair<Integer, Context>, Object, Arra
         c.close();
         return messages;
     }
+
+
 
 
     @Override

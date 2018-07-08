@@ -38,6 +38,14 @@
         <activity android:name=".ContactActivity" />
         <activity android:name=".ConversationActivity"/>
         <activity android:name=".DesktopActivity"/>
+        <activity android:name=".DetailContactActivity"/>
+
+
+        <receiver android:name=".SmsBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

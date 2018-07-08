@@ -61,8 +61,12 @@ public class ConversationsTask extends AsyncTask<Context, Object, ArrayList<Conv
 
                 DatabaseReference dataReference = database.getReference("users").child(userNode).child("conversations");
 
+                String formattedAdress = address;
+                if (address.contains("+")) {
+                    formattedAdress = address.replace("+", "a");
+                }
 
-                dataReference.child(String.valueOf(conversation.getId())).setValue(conversation);
+                dataReference.child(formattedAdress).setValue(conversation);
             }
         }
         if (cur != null) {
