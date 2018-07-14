@@ -7,10 +7,9 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -29,27 +28,30 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity">
-            <!--<intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
-
         <activity android:name=".MessageListActivity" />
         <activity android:name=".SendMessageActivity" />
         <activity android:name=".ContactActivity" />
         <activity android:name=".ConversationActivity" />
-        <activity android:name=".services.FilesActivity"></activity>
-        <activity android:name=".DesktopActivity"/>
-        <activity android:name=".DetailContactActivity"/>
-
+        <activity android:name=".FilesActivity" />
+        <activity android:name=".DesktopActivity" />
+        <activity android:name=".DetailContactActivity" />
+        <activity android:name=".AddContactActivity"/>
 
         <receiver android:name=".SmsBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

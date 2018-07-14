@@ -24,4 +24,7 @@
     <string name="mobile">téléphone</string>
     <string name="modify_contact">modifier</string>
     <string name="delete_contact">supprimer</string>
+    <string name="add_contact_title">Ajouter un contact</string>
+    <string name="add_contact">Ajouter</string>
+    <string name="contact_name">nom :</string>
 </resources>

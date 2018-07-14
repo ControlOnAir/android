@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +37,7 @@ public class ContactActivity extends AppCompatActivity implements ContactViewHol
     private RecyclerView.LayoutManager layoutManager;
     private DatabaseReference contactReference;
     private FirebaseRecyclerAdapter<Contact, ContactViewHolder> adapter;
+    private FloatingActionButton addContactButton;
 
     public final static String CONST_CONTACT_KEY = "contact";
 
@@ -47,6 +49,7 @@ public class ContactActivity extends AppCompatActivity implements ContactViewHol
         editTextSearch = findViewById(R.id.edit_text_search);
 
         contactRecyclerView = findViewById(R.id.list_view_contact);
+        addContactButton = findViewById(R.id.add_contact_button);
 
         toolbar = findViewById(R.id.toolbar);
         TextView title = toolbar.findViewById(R.id.title);
@@ -74,6 +77,17 @@ public class ContactActivity extends AppCompatActivity implements ContactViewHol
         layoutManager = new LinearLayoutManager(this);
         contactRecyclerView.setLayoutManager(layoutManager);
         contactRecyclerView.setAdapter(adapter);
+
+
+        addContactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ContactActivity.this, AddContactActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     private void setupAdapter(FirebaseRecyclerOptions<Contact> options) {

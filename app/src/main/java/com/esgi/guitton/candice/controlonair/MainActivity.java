@@ -81,12 +81,12 @@ public class MainActivity extends AppCompatActivity implements ContactTask.OnTas
             }
         });
 
-        /*fileCard.setOnClickListener(new View.OnClickListener() {
+        fileCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, FileActivity.class));
+                startActivity(new Intent(MainActivity.this, FilesActivity.class));
             }
-        });*/
+        });
         webCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,4 +1,4 @@
-package com.esgi.guitton.candice.controlonair.services;
+package com.esgi.guitton.candice.controlonair;
 
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
