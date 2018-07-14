@@ -14,39 +14,40 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.esgi.guitton.candice.controlonair.custom_firebase.ContactFirebaseAdapter;
 import com.esgi.guitton.candice.controlonair.models.Contact;
 import com.esgi.guitton.candice.controlonair.view_holder.ContactViewHolder;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 
-public class ContactActivity extends AppCompatActivity implements ContactViewHolder.OnContactClickListener {
+public class ContactActivity extends AppCompatActivity implements ContactViewHolder.OnContactClickListener
+{
 
     private ProgressBar loader;
     private LinearLayout emptyView;
     private Button retryButton;
-    private EditText editTextSearch;
+    private SearchView searchView;
     private RecyclerView contactRecyclerView;
     private Toolbar toolbar;
     private RecyclerView.LayoutManager layoutManager;
     private DatabaseReference contactReference;
-    private FirebaseRecyclerAdapter<Contact, ContactViewHolder> adapter;
+    private ContactFirebaseAdapter adapter;
     private FloatingActionButton addContactButton;
-
     public final static String CONST_CONTACT_KEY = "contact";
 
-    public void onCreate(Bundle savedInstanceState) {
+    private String privateKey;
+
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
 
-
-        editTextSearch = findViewById(R.id.edit_text_search);
 
         contactRecyclerView = findViewById(R.id.list_view_contact);
         addContactButton = findViewById(R.id.add_contact_button);
@@ -63,15 +64,15 @@ public class ContactActivity extends AppCompatActivity implements ContactViewHol
 
 
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE);
-        String privateKey = sharedPreferences.getString(Constants.GENERATED_PRIVATE_KEY, "");
+        privateKey = sharedPreferences.getString(Constants.GENERATED_PRIVATE_KEY, "");
         String contactUrl = getString(R.string.contact_firebase_url_reference, privateKey);
         contactReference = Utils.getDatabase().getReferenceFromUrl(contactUrl);
 
-        Query query = contactReference.orderByKey();
+        Query query = contactReference.orderByChild("name");
 
         FirebaseRecyclerOptions<Contact> options = new FirebaseRecyclerOptions.Builder<Contact>().setQuery(query, Contact.class).build();
 
-        setupAdapter(options);
+        adapter = new ContactFirebaseAdapter(options, this);
 
         contactRecyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -79,52 +80,62 @@ public class ContactActivity extends AppCompatActivity implements ContactViewHol
         contactRecyclerView.setAdapter(adapter);
 
 
-        addContactButton.setOnClickListener(new View.OnClickListener() {
+        addContactButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent intent = new Intent(ContactActivity.this, AddContactActivity.class);
                 startActivity(intent);
             }
         });
 
 
-    }
+        searchView = findViewById(R.id.search);
 
-    private void setupAdapter(FirebaseRecyclerOptions<Contact> options) {
-        adapter = new FirebaseRecyclerAdapter<Contact, ContactViewHolder>(options) {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
             @Override
-            protected void onBindViewHolder(@NonNull ContactViewHolder holder, int position, @NonNull Contact contact) {
-                holder.bind(contact);
+            public boolean onQueryTextSubmit(String s)
+            {
+                return false;
             }
 
-            @NonNull
             @Override
-            public ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.contact_list_item, parent, false);
-                return new ContactViewHolder(view, ContactActivity.this);
+            public boolean onQueryTextChange(String s)
+            {
+                adapter.getFilter().filter(s);
+
+                return false;
             }
-        };
+        });
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
-        if (adapter != null) {
+        if (adapter != null)
+        {
             adapter.startListening();
         }
     }
 
     @Override
-    protected void onStop() {
+    protected void onStop()
+    {
         super.onStop();
-        if (adapter != null) {
+        if (adapter != null)
+        {
             adapter.stopListening();
         }
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
             case android.R.id.home:
                 onBackPressed();
                 return true;
@@ -133,7 +144,8 @@ public class ContactActivity extends AppCompatActivity implements ContactViewHol
     }
 
     @Override
-    public void onContactClicked(Contact contact) {
+    public void onContactClicked(Contact contact)
+    {
         Intent intent = new Intent(ContactActivity.this, DetailContactActivity.class);
         intent.putExtra(CONST_CONTACT_KEY, contact);
         startActivity(intent);

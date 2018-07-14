@@ -1,5 +1,10 @@
 package com.esgi.guitton.candice.controlonair;
 
+import android.content.ContentProviderOperation;
+import android.content.ContentValues;
+import android.net.Uri;
+import android.provider.Contacts;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -44,7 +49,7 @@ public class AddContactActivity extends AppCompatActivity {
                 Contact contact = new Contact();
                 contact.setName(contactName.getText().toString());
                 contact.setNumber(contactNumber.getText().toString());
-                
+                addContact(contact.getName(), contact.getNumber());
 
             }
         });
@@ -58,5 +63,16 @@ public class AddContactActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void addContact(String name, String phone) {
+        ContentValues values = new ContentValues();
+        values.put(ContactsContract.PhoneLookup.NUMBER, phone);
+        values.put(ContactsContract.PhoneLookup.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM);
+        values.put(ContactsContract.PhoneLookup.LABEL, name);
+        values.put(ContactsContract.PhoneLookup.DISPLAY_NAME, name);
+        Uri dataUri = getContentResolver().insert(ContactsContract.Data.CONTENT_URI, values);
+        Uri updateUri = Uri.withAppendedPath(dataUri, ContactsContract.PhoneLookup.IN_DEFAULT_DIRECTORY);
+        values.clear();
     }
 }

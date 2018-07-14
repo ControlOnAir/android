@@ -36,7 +36,7 @@ public class ContactTask extends AsyncTask<Context, Object, ArrayList<Contact>> 
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
         ArrayList<Contact> contacts = new ArrayList<Contact>();
-
+                    contacts.clear();
         if ((cur != null ? cur.getCount() : 0) > 0) {
             while (cur != null && cur.moveToNext()) {
                 String id = cur.getString(

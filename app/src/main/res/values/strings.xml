@@ -15,7 +15,7 @@
     <string name="ok">Ok</string>
     <string name="cancel">Refuser</string>
     <string name="send_data">Synchroniser les données</string>
-    <string name="privateKey">Pour vous connecter sur la plateforme web, veuillez entrer ce code</string>
+    <string name="privateKey">Pour vous connecter sur la plateforme web, \n veuillez entrer ce code</string>
     <string name="contact_firebase_url_reference">https://controlonairapp.firebaseio.com/users/%1$s/contacts</string>
     <string name="conversation_firebase_url_reference">https://controlonairapp.firebaseio.com/users/%1$s/conversations</string>
     <string name="message_firebase_url_reference">https://controlonairapp.firebaseio.com/users/%1$s/messages/%2$s</string>
@@ -27,4 +27,7 @@
     <string name="add_contact_title">Ajouter un contact</string>
     <string name="add_contact">Ajouter</string>
     <string name="contact_name">nom :</string>
+    <string name="rgpd_title">Règlement général sur la protection des données</string>
+    <string name="rgpd_text">Pour être accessible sur notre plateforme web, les données de votre téléphone sont enregistrés à chaque synchronisation. Pour faire une demande de récupération de vos données :</string>
+    <string name="askData">Envoyer</string>
 </resources>

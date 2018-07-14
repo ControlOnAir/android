@@ -1,24 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_view_send_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/privateKey"
-        android:textColor="@color/colorPrimary"
-        android:padding="50dp"
-        app:layout_constraintBottom_toTopOf="@id/printKey"/>
-    <TextView
-        android:id="@+id/printKey"
+    <include layout="@layout/toolbar"/>
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/send_data_button"
+        android:layout_height="match_parent">
 
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/text_view_send_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/privateKey"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toTopOf="@id/printKey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            />
+
+        <TextView
+            android:id="@+id/printKey"
+            style="@style/send_data_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="blabla"
+            app:layout_constraintBottom_toTopOf="@id/rgpd_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_view_send_data"
+            />
+
+        <TextView
+            android:id="@+id/rgpd_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rgpd_title"
+            android:paddingLeft="20dp"
+            app:layout_constraintBottom_toTopOf="@id/rgpd_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/printKey"
+            />
+
+        <TextView
+            android:id="@+id/rgpd_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rgpd_text"
+            android:paddingLeft="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rgpd_title"
+            />
+
+        <Button
+            android:id="@+id/askData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/rgpd_text"
+            android:text="@string/askData"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>

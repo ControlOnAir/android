@@ -61,7 +61,7 @@
 
 
             <Button
-                android:id="@+id/delete_contact"
+                android:id="@+id/add_contact_button"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="@string/add_contact"

@@ -20,14 +20,17 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+                  android:screenOrientation="portrait">
 
             <!--
             <intent-filter>
@@ -37,14 +40,30 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".MessageListActivity" />
-        <activity android:name=".SendMessageActivity" />
-        <activity android:name=".ContactActivity" />
-        <activity android:name=".ConversationActivity" />
-        <activity android:name=".FilesActivity" />
-        <activity android:name=".DesktopActivity" />
-        <activity android:name=".DetailContactActivity" />
-        <activity android:name=".AddContactActivity"/>
+        <activity android:name=".MessageListActivity"
+                  android:screenOrientation="portrait"
+            />
+        <activity android:name=".SendMessageActivity"
+                  android:screenOrientation="portrait"
+            />
+        <activity android:name=".ContactActivity"
+                  android:screenOrientation="portrait"
+            />
+        <activity android:name=".ConversationActivity"
+                  android:screenOrientation="portrait"
+            />
+        <activity android:name=".FilesActivity"
+                  android:screenOrientation="portrait"
+            />
+        <activity android:name=".DesktopActivity"
+                  android:screenOrientation="portrait"
+            />
+        <activity android:name=".DetailContactActivity"
+                  android:screenOrientation="portrait"
+            />
+        <activity android:name=".AddContactActivity"
+                  android:screenOrientation="portrait"
+            />
 
         <receiver android:name=".SmsBroadcastReceiver">
             <intent-filter>
