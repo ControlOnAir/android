@@ -112,6 +112,15 @@ public class ContactActivity extends AppCompatActivity implements ContactViewHol
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (adapter != null)
+        {
+            adapter.startListening();
+        }
+    }
+
+    @Override
     protected void onStart()
     {
         super.onStart();

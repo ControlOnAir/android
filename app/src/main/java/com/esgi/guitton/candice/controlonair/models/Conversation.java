@@ -3,7 +3,7 @@ package com.esgi.guitton.candice.controlonair.models;
 import java.io.Serializable;
 import java.util.List;
 
-public class Conversation implements Serializable{
+public class Conversation implements Serializable {
     private int id;
     private Contact contact;
     private long timestamp;
@@ -16,7 +16,8 @@ public class Conversation implements Serializable{
         this.messages = messages;
     }
 
-    public Conversation(){}
+    public Conversation() {
+    }
 
     public int getId() {
         return id;
@@ -64,14 +65,14 @@ public class Conversation implements Serializable{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Conversation that = (Conversation) o;
-        return id == that.id;
+        Conversation conversation = (Conversation) o;
+
+        return conversation.id == id && conversation.timestamp == timestamp;
     }
 
     @Override
     public int hashCode() {
 
-        return id;
-
+        return id + messages.size();
     }
 }

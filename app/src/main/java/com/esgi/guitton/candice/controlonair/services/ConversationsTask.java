@@ -83,7 +83,7 @@ public class ConversationsTask extends AsyncTask<Context, Object, ArrayList<Conv
     public static Contact getContact(Context context, String phoneNumber) {
         ContentResolver cr = context.getContentResolver();
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
-        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
+        Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup.CONTACT_ID}, null, null, null);
         if (cursor == null) {
             return null;
         }
@@ -91,7 +91,9 @@ public class ConversationsTask extends AsyncTask<Context, Object, ArrayList<Conv
         Contact contact = new Contact(null, null, phoneNumber);
         if (cursor.moveToFirst()) {
             final String contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+            final String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.CONTACT_ID));
             contact.setName(contactName);
+            contact.setId(contactId);
         }
         if (cursor != null && !cursor.isClosed()) {
             cursor.close();

@@ -13,8 +13,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.esgi.guitton.candice.controlonair.models.Contact;
+
+import java.util.ArrayList;
 
 public class AddContactActivity extends AppCompatActivity {
 
@@ -51,6 +54,8 @@ public class AddContactActivity extends AppCompatActivity {
                 contact.setNumber(contactNumber.getText().toString());
                 addContact(contact.getName(), contact.getNumber());
 
+                Toast.makeText(AddContactActivity.this, "contact ajouté", Toast.LENGTH_SHORT).show();
+                onBackPressed();
 
             }
         });
@@ -67,13 +72,43 @@ public class AddContactActivity extends AppCompatActivity {
     }
 
     private void addContact(String name, String phone) {
-        ContentValues values = new ContentValues();
-        values.put(ContactsContract.PhoneLookup.NUMBER, phone);
-        values.put(ContactsContract.PhoneLookup.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM);
-        values.put(ContactsContract.PhoneLookup.LABEL, name);
-        values.put(ContactsContract.PhoneLookup.DISPLAY_NAME, name);
-        Uri dataUri = getContentResolver().insert(ContactsContract.Data.CONTENT_URI, values);
-        Uri updateUri = Uri.withAppendedPath(dataUri, ContactsContract.PhoneLookup.IN_DEFAULT_DIRECTORY);
-        values.clear();
+        ArrayList< ContentProviderOperation > ops = new ArrayList < ContentProviderOperation > ();
+
+        ops.add(ContentProviderOperation.newInsert(
+                ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+                .build());
+
+        //------------------------------------------------------ Names
+        if (name != null) {
+            ops.add(ContentProviderOperation.newInsert(
+                    ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                    .withValue(
+                            ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
+                            name).build());
+        }
+
+        //------------------------------------------------------ Mobile Number
+        if (phone != null) {
+            ops.add(ContentProviderOperation.
+                    newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, phone)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
+                            ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+                    .build());
+        }
+        try {
+            getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

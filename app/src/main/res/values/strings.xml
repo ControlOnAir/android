@@ -27,7 +27,12 @@
     <string name="add_contact_title">Ajouter un contact</string>
     <string name="add_contact">Ajouter</string>
     <string name="contact_name">nom :</string>
-    <string name="rgpd_title">Règlement général sur la protection des données</string>
-    <string name="rgpd_text">Pour être accessible sur notre plateforme web, les données de votre téléphone sont enregistrés à chaque synchronisation. Pour faire une demande de récupération de vos données :</string>
+    <string name="rgpd_title"><b>Règlement général sur la protection des données</b></string>
+    <string name="rgpd_text">Pour être accessible sur notre plateforme web, les données de votre téléphone sont enregistrés à chaque synchronisation. Droit de l\'utilisateur sur les données collectées
+        L\'utilisateur est en droit comme l\'indique l\'article 16 de la loi RGPD mis en application depuis le 25 mai 2018 de demander un listage exhaustif des données faisant l\'objet d\'un traitement par l\'application ControlOnAir.</string>
+    <string name="rgpd_text2">Ce listage peut être demandé à tout moment par un utilisateur connecté à l\'application. L\'application permet également, comme l\'indique l\'article 17 de la RGPD, un droit à l\'effacement / droit à l\'oubli des informations collectées sur l\'utilisateur. Par ce procédé toute information collectée par le biais de l\'utilisation de l\'application peut être détruite à la demande de l\'utilisateur quand il le souhaite.</string>
     <string name="askData">Envoyer</string>
+    <string name="desktop">Desktop code</string>
+    <string name="email">Email</string>
+    <string name="send">envoyer</string>
 </resources>

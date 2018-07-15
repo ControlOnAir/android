@@ -8,9 +8,6 @@
 
     <include layout="@layout/toolbar"/>
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/text_view_send_data"
@@ -21,11 +18,11 @@
             android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
             android:textSize="14dp"
+            android:layout_gravity="center"
             app:layout_constraintBottom_toTopOf="@id/printKey"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
             />
 
         <TextView
@@ -63,16 +60,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rgpd_title"
             />
-
+        <TextView
+            android:id="@+id/rgpd_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rgpd_text2"
+            android:paddingLeft="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rgpd_text"
+            />
         <Button
             android:id="@+id/askData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/rgpd_text"
+            app:layout_constraintTop_toBottomOf="@id/rgpd_text2"
             android:text="@string/askData"
+            android:layout_gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             />
 
-    </android.support.constraint.ConstraintLayout>
 </LinearLayout>
