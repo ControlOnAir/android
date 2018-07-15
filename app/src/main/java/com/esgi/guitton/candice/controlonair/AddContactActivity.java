@@ -51,6 +51,7 @@ public class AddContactActivity extends AppCompatActivity {
                 contact.setNumber(contactNumber.getText().toString());
                 addContact(contact.getName(), contact.getNumber());
 
+
             }
         });
     }
